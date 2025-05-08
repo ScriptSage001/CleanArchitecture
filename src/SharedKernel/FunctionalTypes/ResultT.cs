@@ -1,7 +1,7 @@
 namespace SharedKernel.FunctionalTypes;
 
 /// <summary>
-/// Class for Defining Genric Result Type
+/// Class for Defining Generic Result Type
 /// </summary>
 /// <typeparam name="TValue"></typeparam>
 public class Result<TValue> : Result

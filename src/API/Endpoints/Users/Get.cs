@@ -35,8 +35,7 @@ public class Get : IEndpoint
                         .ProducesProblem(StatusCodes.Status404NotFound)
                         .ProducesProblem(StatusCodes.Status500InternalServerError);
         
-        app.MapGet("users/username/{userName}", async (string userName, IMediator mediator, CancellationToken token) 
-            => await GetUserByUserNameAsync(userName, mediator, token))
+        app.MapGet("users/username/{userName}", GetUserByUserNameAsync)
                         .RequireAuthorization()
                         .WithTags(Tags.Users)
                         .WithSummary("Fetch an user by username.")

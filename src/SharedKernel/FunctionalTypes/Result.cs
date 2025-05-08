@@ -39,7 +39,7 @@ public class Result
     public bool IsFailure => !IsSuccess;
 
     /// <summary>
-    /// Carries Error incase of Failure
+    /// Carries Error in case of Failure
     /// </summary>
     public Error Error { get; }
 
@@ -50,7 +50,7 @@ public class Result
     public static Result Success() => new(true, Error.None);
 
     /// <summary>
-    /// Genric Success
+    /// Generic Success
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
     /// <param name="value"></param>
@@ -60,7 +60,7 @@ public class Result
     public static Result Failure(Error error) => new(false, error);
 
     /// <summary>
-    /// Genric Failure
+    /// Generic Failure
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
     /// <param name="error"></param>

@@ -19,8 +19,7 @@ public class Get : IEndpoint
     /// <param name="app"></param>
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("users/{userId:guid}", async (Guid userId, IMediator mediator, CancellationToken token) 
-            => await GetUserByIdAsync(userId, mediator, token))
+        app.MapGet("users/{userId:guid}", GetUserByIdAsync)
                         .RequireAuthorization()
                         .WithTags(Tags.Users)
                         .WithSummary("Fetch an user by id.")
@@ -28,8 +27,7 @@ public class Get : IEndpoint
                         .ProducesProblem(StatusCodes.Status404NotFound)
                         .ProducesProblem(StatusCodes.Status500InternalServerError);
         
-        app.MapGet("users/email/{email}", async (string email, IMediator mediator, CancellationToken token) 
-            => await GetUserByEmailAsync(email, mediator, token))
+        app.MapGet("users/email/{email}", GetUserByEmailAsync)
                         .RequireAuthorization()
                         .WithTags(Tags.Users)
                         .WithSummary("Fetch an user by email.")

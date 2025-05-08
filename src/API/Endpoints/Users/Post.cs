@@ -21,16 +21,14 @@ public class Post : IEndpoint
     /// <param name="app">The endpoint route builder used to define routes.</param>
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("users/register", async (RegisterRequest request, IMediator mediator, CancellationToken cancellationToken)
-            => await RegisterUser(request, mediator, cancellationToken))
+        app.MapPost("users/register", RegisterUser)
                         .WithTags(Tags.Users)
                         .WithSummary("Register a new user.")
                         .Produces<UserModel>(StatusCodes.Status200OK)
                         .ProducesProblem(StatusCodes.Status404NotFound)
                         .ProducesProblem(StatusCodes.Status500InternalServerError);
 
-        app.MapPost("users/login", async (LoginRequest request, IMediator mediator, CancellationToken cancellationToken)
-                => await LoginUser(request, mediator, cancellationToken))
+        app.MapPost("users/login", LoginUser)
                             .WithTags(Tags.Users)
                             .WithSummary("Login an existing user.")
                             .Produces<string>(StatusCodes.Status200OK)

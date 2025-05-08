@@ -1,0 +1,66 @@
+﻿services:
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    container_name: API
+    build:
+      context: .
+      dockerfile: API/Dockerfile
+    ports:
+        - "5000:8080"
+        - "5001:8081"
+    depends_on:
+      - sqlserver
+      - seq
+      - rmq
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - clean-arch-net
+          
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: SqlServer
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Password123!"
+    volumes:
+        - sqlvolume:/var/opt/mssql
+    ports:
+      - "1433:1433"
+    networks:
+      - clean-arch-net
+    
+  rmq:
+    image: rabbitmq:management
+    container_name: RabbitMq
+    hostname: clean-arch-mq
+    volumes:
+      - ./.containers/queue/data/:/var/lib/rabbitmq
+      - ./.containers/queue/log/:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+        - "15672:15672" # RabbitMQ Management UI
+        - "5672:5672"   # RabbitMQ AMQP protocol
+    networks:
+      - clean-arch-net
+          
+  seq:
+    image: datalust/seq:2024.3
+    container_name: seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - 8081:80
+      - 5341:5341
+    networks:
+      - clean-arch-net
+        
+networks:
+  clean-arch-net:
+    driver: bridge
+      
+volumes:
+  sqlvolume:
+      

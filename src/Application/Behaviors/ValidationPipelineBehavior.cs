@@ -36,7 +36,7 @@ internal sealed class ValidationPipelineBehavior<TRequest, TResponse> : IPipelin
     {
         if (!_validators.Any())
         {
-            return await next();
+            return await next(cancellationToken);
         }
 
         var errors = _validators
@@ -54,7 +54,7 @@ internal sealed class ValidationPipelineBehavior<TRequest, TResponse> : IPipelin
             return CreateValidationResult<TResponse>(errors);
         }
 
-        return await next();
+        return await next(cancellationToken);
     }
 
     /// <summary>
